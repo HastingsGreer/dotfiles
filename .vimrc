@@ -3,6 +3,7 @@ set expandtab
 set tabstop=4
 set shiftwidth=4
 set autoread
+set softtabstop=-1
 command B :w | execute ":silent !black ." | :redraw!
 
 
@@ -14,3 +15,5 @@ command -nargs=1 PackGrep :silent :grep! -sF -tpy --vimgrep <q-args> . $(dirname
 command Def :silent :grep! -s -tpy --vimgrep "def <cword>\(\|class <cword>[\(:]" . $(dirname $(which python))/../lib/python$(python --version  \| cut -c8-10)/ | tabe | cfirst 
 
 command Deff PackGrep def <cword>
+
+
