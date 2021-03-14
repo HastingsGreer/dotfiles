@@ -3,6 +3,7 @@ set expandtab
 set tabstop=4
 set shiftwidth=4
 set autoread
+set softtabstop=-1
 command B :w | execute ":silent !black ." | :redraw!
 
 "set switchbuf+=usetab,newtab
