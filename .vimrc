@@ -18,4 +18,4 @@ command Deff PackGrep def <cword>
 command Gr :silent grep! -sF --vimgrep <cword> . | tabe | cfirst
 
 map <f8> :w<cr>:!pdflatex % <cr><cr>
-imap <f8> <exc>:w<cr> :!pdflatex % <cr><cr>i
+imap <f8> <esc>:w<cr> :!pdflatex % <cr><cr>i
