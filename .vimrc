@@ -6,7 +6,6 @@ set autoread
 set softtabstop=-1
 command B :w | execute ":silent !black ." | :redraw!
 
-
 "set switchbuf+=usetab,newtab
 set grepprg=rg\ --vimgrep
 
@@ -16,4 +15,7 @@ command Def :silent :grep! -s -tpy --vimgrep "def <cword>\(\|class <cword>[\(:]"
 
 command Deff PackGrep def <cword>
 
+command Gr :silent grep! -sF --vimgrep <cword> . | tabe | cfirst
 
+map <f8> :w<cr>:!pdflatex % <cr><cr>
+imap <f8> <esc>:w<cr> :!pdflatex % <cr><cr>i
