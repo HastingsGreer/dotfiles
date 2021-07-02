@@ -5,7 +5,7 @@ set shiftwidth=4
 set autoread
 set softtabstop=-1
 
-set number
+"set number
 
 command B :w | execute ":silent !black ." | :redraw!
 
