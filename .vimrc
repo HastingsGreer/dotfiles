@@ -30,3 +30,5 @@ imap <f8> <esc>:w<cr> :!pdflatex % <cr><cr>i
 
 map <f9> :w<cr>:!python % <cr>
 imap <f9> <esc>:w<cr> :!python % <cr>
+
+map <f10> :w<cr><c-w>l<up><cr><c-w>h
