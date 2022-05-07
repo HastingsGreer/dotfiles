@@ -1,5 +1,6 @@
 set grepprg=rg\ --vimgrep
 set grepformat^=%f:%l:%c:%m
+nmap <F8> :cn<cr>
 
 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
 if empty(glob(data_dir . '/autoload/plug.vim'))
@@ -11,6 +12,7 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'pappasam/coc-jedi', { 'do': 'yarn install --frozen-lockfile && yarn build', 'branch': 'main' }
+Plug 'psf/black'
 Plug 'michaeljsmith/vim-indent-object'
 
 call plug#end()
@@ -183,4 +185,8 @@ nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
-nmap <F8> :cn<cr>
+nnoremap <leader>b :Black<CR>
+augroup black_on_save
+  autocmd!
+  autocmd BufWritePre *.py Black
+augroup end
