@@ -1,6 +1,7 @@
 set grepprg=rg\ --vimgrep
 set grepformat^=%f:%l:%c:%m
 nmap <F8> :cn<cr>
+set directory=~/.vim/swap//
 
 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
 if empty(glob(data_dir . '/autoload/plug.vim'))
