@@ -3,6 +3,9 @@ set grepformat^=%f:%l:%c:%m
 nmap <F8> :cn<cr>
 set directory=~/.vim/swap//
 
+nmap <silent> gJ /^class \\|^def <CR>zz
+nmap <silent> gj /^class \\|^\(    \)def <CR>zz
+nmap <silent> gk ?^class \\|^def <CR>
 set backspace=indent,eol,start
 
 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
@@ -13,6 +16,7 @@ endif
 
 call plug#begin('~/.vim/plugged')
 
+Plug 'junegunn/fzf'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'pappasam/coc-jedi', { 'do': 'yarn install --frozen-lockfile && yarn build', 'branch': 'main' }
 Plug 'psf/black'
@@ -72,11 +76,6 @@ else
   inoremap <silent><expr> <c-@> coc#refresh()
 endif
 
-" Make <CR> auto-select the first completion item and notify coc.nvim to
-" format on enter, <cr> could be remapped by other vim plugin
-inoremap <silent><expr> <C-n> pumvisible() ? coc#_select_confirm()
-                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-
 " Use `[g` and `]g` to navigate diagnostics
 " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
@@ -106,8 +105,6 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 nmap <leader>rn <Plug>(coc-rename)
 
 " Formatting selected code.
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
 
 augroup mygroup
   autocmd!
@@ -156,14 +153,6 @@ endif
 nmap <silent> <C-s> <Plug>(coc-range-select)
 xmap <silent> <C-s> <Plug>(coc-range-select)
 
-" Add `:Format` command to format current buffer.
-command! -nargs=0 Format :call CocActionAsync('format')
-
-" Add `:Fold` command to fold current buffer.
-command! -nargs=? Fold :call     CocAction('fold', <f-args>)
-
-" Add `:OR` command for organize imports of the current buffer.
-command! -nargs=0 OR   :call     CocActionAsync('runCommand', 'editor.action.organizeImport')
 
 " Add (Neo)Vim's native statusline support.
 " NOTE: Please see `:h coc-status` for integrations with external plugins that
@@ -189,6 +178,8 @@ nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
 nnoremap <leader>b :Black<CR>
+nnoremap <leader>f :FZF<CR>
+nnoremap <silent> <leader>i :w<CR>:!isort %<CR><CR>:e<CR>:Black<CR>
 augroup black_on_save
   autocmd!
   autocmd BufWritePre *.py Black
