@@ -1,11 +1,18 @@
 set grepprg=rg\ --vimgrep
 set grepformat^=%f:%l:%c:%m
 nmap <F8> :cn<cr>
-set directory=~/.vim/swap//
+nmap <leader>p :w<CR>:!pdflatex %<CR>
 
 nmap <silent> gJ /^class \\|^def <CR>zz
 nmap <silent> gj /^class \\|^\(    \)def <CR>zz
 nmap <silent> gk ?^class \\|^def <CR>
+
+command -nargs=1 PackGrep :silent :grep! -sF -tpy --vimgrep <q-args> . $(dirname $(which python))/../lib/python$(python --version  \| cut -c8-10)/ | tabe | cfirst 
+
+"Find the definition of a python class or function under the cursor
+command Def :silent :grep! -s -tpy --vimgrep "def <cword>\(\|class <cword>[\(:]" . $(dirname $(which python))/../lib/python$(python --version  \| cut -c8-10)/ | tabe | cfirst 
+
+
 set backspace=indent,eol,start
 
 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
