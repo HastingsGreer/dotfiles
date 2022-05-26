@@ -1,7 +1,8 @@
 set grepprg=rg\ --vimgrep
 set grepformat^=%f:%l:%c:%m
+set linebreak
 nmap <F8> :cn<cr>
-nmap <leader>p :w<CR>:!pdflatex %<CR>
+nmap <leader>p :w<CR>:!pdflatex %<CR><CR>
 
 nmap <silent> gJ /^class \\|^def <CR>zz
 nmap <silent> gj /^class \\|^\(    \)def <CR>zz
