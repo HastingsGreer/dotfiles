@@ -29,7 +29,7 @@ endif
 call plug#begin('~/.vim/plugged')
 
 Plug 'junegunn/fzf'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'HastingsGreer/coc.nvim', {'branch': 'release'}
 Plug 'pappasam/coc-jedi', { 'do': 'yarn install --frozen-lockfile && yarn build', 'branch': 'main' }
 Plug 'psf/black'
 Plug 'michaeljsmith/vim-indent-object'
