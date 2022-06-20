@@ -1,13 +1,17 @@
 set grepprg=rg\ --vimgrep
 set grepformat^=%f:%l:%c:%m
+set linebreak
 nmap <F8> :cn<cr>
-nmap <leader>p :w<CR>:!pdflatex %<CR>
+nmap <leader>p :w<CR>:!pdflatex %<CR><CR>
 
 nmap <silent> gJ /^class \\|^def <CR>zz
 nmap <silent> gj /^class \\|^\(    \)def \\|^def <CR>zz
 nmap <silent> gk ?^class \\|^def <CR>
 
+tnoremap <esc> <c-W>N
+
 vnoremap <leader>t y<c-w><c-w><c-w>"0<cr><c-w><c-w>
+nnoremap <leader>t :w<cr><C-W><c-W>i<up><cr><c-W><c-W>
 
 noremap gp `[V`]
 
@@ -28,7 +32,7 @@ endif
 call plug#begin('~/.vim/plugged')
 
 Plug 'junegunn/fzf'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'HastingsGreer/coc.nvim', {'branch': 'release'}
 Plug 'pappasam/coc-jedi', { 'do': 'yarn install --frozen-lockfile && yarn build', 'branch': 'main' }
 Plug 'psf/black'
 Plug 'michaeljsmith/vim-indent-object'
