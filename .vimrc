@@ -13,6 +13,8 @@ tnoremap <esc> <c-W>N
 vnoremap <leader>t y<c-w><c-w><c-w>"0<cr><c-w><c-w>
 nnoremap <leader>t :w<cr><C-W><c-W>i<up><cr><c-W><c-W>
 
+cnoremap :bd :bp<bar>vsp<bar>bn<bar>bd<CR>
+
 noremap gp `[V`]
 
 command -nargs=1 PackGrep :silent :grep! -sF -tpy --vimgrep <q-args> . $(dirname $(which python))/../lib/python$(python --version  \| cut -c8-10)/ | tabe | cfirst 
