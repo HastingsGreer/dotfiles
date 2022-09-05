@@ -1,0 +1,29 @@
+#!/playpen-raid1/tgreer/anaconda3/envs/mermaid/bin/python
+
+import argparse
+parser = argparse.ArgumentParser(description='info of a volume')
+parser.add_argument('-w', action='store_true')
+parser.add_argument('volumes', metavar='Volume', nargs='+',
+                   help='volumes to investigate')
+import SimpleITK as sitk
+args = parser.parse_args()
+for v in args.volumes:
+    reader = sitk.ImageFileReader()
+
+    reader.SetFileName(v)
+    
+    
+    reader.LoadPrivateTagsOn()
+
+    reader.ReadImageInformation()
+    print("=" * 30)
+    print(v)
+    if(args.w):
+        for k in reader.GetMetaDataKeys():
+            v = reader.GetMetaData(k)
+            print("({0}) = = \"{1}\"".format(k, v))
+
+    print("Image Size: {0}".format(reader.GetSize()))
+    print("Image PixelType: {0}"
+          .format(sitk.GetPixelIDValueAsString(reader.GetPixelID())))
+    print("Image Spacing: {0}".format(reader.GetSpacing()))
