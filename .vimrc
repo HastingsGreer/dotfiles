@@ -2,18 +2,19 @@ set grepprg=rg\ --vimgrep
 set grepformat^=%f:%l:%c:%m
 set linebreak
 nmap <F8> :cn<cr>
+nmap <F6> :bn<cr>
 nmap <leader>p :w<CR>:!pdflatex %<CR><CR>
+
+imap <c-W> <esc><c-W>
 
 nmap <silent> gJ /^class \\|^def <CR>zz
 nmap <silent> gj /^class \\|^\(    \)def \\|^def <CR>zz
 nmap <silent> gk ?^class \\|^def <CR>
 
-tnoremap <esc> <c-W>N
+tnoremap <esc><esc> <c-W>N
 
 vnoremap <leader>t y<c-w><c-w><c-w>"0<cr><c-w><c-w>
-nnoremap <leader>t :w<cr><C-W><c-W>i<up><cr><c-W><c-W>
-
-cnoremap :bd :bp<bar>vsp<bar>bn<bar>bd<CR>
+nnoremap <leader>t :w<cr><C-W><c-W>i<bs><up><cr><c-W><c-W>
 
 noremap gp `[V`]
 
