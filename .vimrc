@@ -26,6 +26,7 @@ nnoremap <leader>t :w<cr><C-W><c-W>i<bs><up><cr><c-W><c-W>
 
 cnoremap :bd :bp<bar>vsp<bar>bn<bar>bd<CR>
 
+" create a lil terminal
 cnoremap :tterm :term<cr><c-W>J99<c-W>-7<c-W>+
 
 noremap gp `[V`]
