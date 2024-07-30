@@ -1,3 +1,11 @@
+let g:coc_disable_startup_warning = 1
+
+let &t_ut=''
+
+
+
+
+
 set grepprg=rg\ --vimgrep
 set grepformat^=%f:%l:%c:%m
 set linebreak
@@ -18,6 +26,8 @@ nnoremap <leader>t :w<cr><C-W><c-W>i<bs><up><cr><c-W><c-W>
 
 cnoremap :bd :bp<bar>vsp<bar>bn<bar>bd<CR>
 
+cnoremap :tterm :term<cr><c-W>J99<c-W>-7<c-W>+
+
 noremap gp `[V`]
 
 command -nargs=1 PackGrep :silent :grep! -sF -tpy --vimgrep <q-args> . $(dirname $(which python))/../lib/python$(python --version  \| cut -c8-10)/ | tabe | cfirst 
@@ -36,14 +46,25 @@ endif
 
 call plug#begin('~/.vim/plugged')
 
+Plug 'morhetz/gruvbox'
 Plug 'junegunn/fzf'
-Plug 'HastingsGreer/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'pappasam/coc-jedi', { 'do': 'yarn install --frozen-lockfile && yarn build', 'branch': 'main' }
 Plug 'psf/black'
 Plug 'michaeljsmith/vim-indent-object'
 
 call plug#end()
 
+autocmd ColorScheme * call Highlight()
+
+function! Highlight() abort
+  hi Conceal ctermfg=239 guifg=#504945
+  hi CocSearch ctermfg=12 guifg=#18A3FF
+endfunction
+
+autocmd vimenter * ++nested colorscheme gruvbox
+
+autocmd ColorScheme * hi CocMenuSel ctermbg=237 guibg=#13354A
 
 " Set internal encoding of vim, not needed on neovim, since coc.nvim using some
 " unicode characters in the file autoload/float.vim
@@ -200,3 +221,5 @@ nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 nnoremap <leader>b :Black<CR>
 nnoremap <leader>f :FZF<CR>
 nnoremap <silent> <leader>i :w<CR>:!isort %<CR><CR>:e<CR>:Black<CR>
+
+set background=dark
