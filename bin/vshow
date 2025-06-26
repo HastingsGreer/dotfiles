@@ -1,5 +1,4 @@
-#!/playpen-raid1/tgreer/anaconda3/envs/mermaid/bin/python
-
+#!/home/hastings/projects/icon/venv/bin/python
 import argparse
 parser = argparse.ArgumentParser(description='info of a volume')
 parser.add_argument('-x', action='store_true')
@@ -8,6 +7,8 @@ parser.add_argument('-z', action='store_true')
 
 
 parser.add_argument('-max', action='store_true')
+parser.add_argument('-mean', action='store_true')
+parser.add_argument('-noterm', action='store_true')
 parser.add_argument('volumes', metavar='Volume', nargs='+',
                    help='volumes to investigate')
 
@@ -15,31 +16,60 @@ import SimpleITK as sitk
 import numpy as np
 from PIL import Image
 from fabulous import image
+import scipy.ndimage
 
 args = parser.parse_args()
 for v in args.volumes:
-    print(v)
-    volume = sitk.ReadImage(v)
-    volume = sitk.GetArrayFromImage(volume)
-    if args.max:
-        axis = args.y + 2 * args.z
-        slice_ = np.max(volume, axis=axis)
-    else:
-        if args.z:
-            slice_ = volume[:, :, volume.shape[2] // 2]
-        elif args.y:
-            slice_ = volume[:, volume.shape[1] // 2,:]
-        else:
-            slice_ = volume[volume.shape[0] // 2,:, :]
+    reader = sitk.ImageFileReader()
+    reader.SetFileName(v)
+    reader.LoadPrivateTagsOn()
+    reader.ReadImageInformation()
 
-            
-    slice_ = np.array(slice_, dtype=np.float64)
-    min_ = np.min(volume)
-    slice_ -= min_
-    slice_ /= (np.max(volume) - min_)
-    slice_ *= 255
-    i = Image.fromarray(slice_).convert("L")
-    i.save("/tmp/horse.jpg")
-    print(image.Image("/tmp/horse.jpg"))
-    
+    try:
+        print(v)
+        volume = sitk.ReadImage(v)
+        volume = sitk.GetArrayFromImage(volume)
+        if args.max:
+            axis = args.y + 2 * args.z
+            volume = np.flip(volume, axis=axis)
+            slice_ = np.max(volume, axis=axis)
+        elif args.mean:
+            axis = args.y + 2 * args.z
+            slice_ = np.mean(volume, axis=axis)
+        else:
+            if args.z:
+                slice_ = volume[:, :,  volume.shape[2] // 2]
+            elif args.y:
+                slice_ = volume[:, 10 + volume.shape[1] // 2,:]
+            else:
+                slice_ = volume[volume.shape[0] // 2,:, :]
+
+                
+        slice_ = np.array(slice_, dtype=np.float64)
+        if args.z:
+            slice_ = scipy.ndimage.zoom(slice_, [reader.GetSpacing()[2], reader.GetSpacing()[1]], order=1).transpose()
+        elif args.y:
+            slice_ = scipy.ndimage.zoom(slice_, [reader.GetSpacing()[2], reader.GetSpacing()[0]], order=1).transpose()
+        else:
+            slice_ = scipy.ndimage.zoom(slice_, [reader.GetSpacing()[1], reader.GetSpacing()[0]], order=1).transpose()
+
+
+        min_ = np.min(slice_)
+        slice_ -= min_
+        slice_ /= (np.max(slice_) - min_)
+        slice_ *= 255
+        i = Image.fromarray(slice_).convert("L")
+
+        import os
+
+        name = "~/vshow" + os.path.abspath(v) + ".png"
+        print("name", name)
+        os.makedirs(os.path.dirname(name), exist_ok=True)
+        i.save(name)
+        if(not args.noterm):
+            print(image.Image(name))
+        print(np.min(volume), np.max(volume))
+
+    except Exception as e:
+        print(e)
     
